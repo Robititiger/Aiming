@@ -23,7 +23,7 @@ local function InitializePlayersModel()
         if child:IsA("Model") and child.Name == "Model" then
             -- Check if this model contains any player characters
             for _, player in pairs(Players:GetPlayers()) do
-                if child:FindFirstChild(player.Name) then
+                if player ~= LocalPlayer and child:FindFirstChild(player.Name) then
                     PlayersModel = child
                     print("Found PlayersModel: " .. child.Name)
                     return
@@ -39,6 +39,10 @@ InitializePlayersModel()
 
 -- // Get the character of a player
 function AimingUtilities.Character(Player)
+    if Player == LocalPlayer then
+        return LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait() -- Return local player's character
+    end
+
     if PlayersModel then
         local character = PlayersModel:FindFirstChild(Player.Name) -- Find the character under PlayersModel
         if character then
