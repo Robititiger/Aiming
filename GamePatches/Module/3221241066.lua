@@ -21,11 +21,13 @@ local PlayersModel = nil
 local function InitializePlayersModel()
     for _, child in pairs(Workspace:GetChildren()) do
         if child:IsA("Model") and child.Name == "Model" then
-            -- Check if this model contains player characters
-            if child:FindFirstChild(LocalPlayer.Name) then
-                PlayersModel = child
-                print("Found PlayersModel: " .. child.Name)
-                return
+            -- Check if this model contains any player characters
+            for _, player in pairs(Players:GetPlayers()) do
+                if child:FindFirstChild(player.Name) then
+                    PlayersModel = child
+                    print("Found PlayersModel: " .. child.Name)
+                    return
+                end
             end
         end
     end
