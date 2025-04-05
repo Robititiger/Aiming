@@ -40,13 +40,13 @@ function AimingUtilities.Character(Player)
             local character = PlayersModel:FindFirstChild(Player.Name) -- Find the character under PlayersModel
             if character then
                 print("Character found for player: " .. Player.Name)
+                return character
             else
-                -- Only print for other players
                 print("Character not found for player: " .. Player.Name)
             end
-            return character
+        else
+            print("PlayersModel is nil, cannot find characters.")
         end
-        print("PlayersModel is nil, cannot find characters.")
     end
     -- Return nil for the local player since their character is not in PlayersModel
     return nil
