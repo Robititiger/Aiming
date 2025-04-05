@@ -40,8 +40,15 @@ InitializePlayersModel()
 -- // Get the character of a player
 function AimingUtilities.Character(Player)
     if PlayersModel then
-        return PlayersModel:FindFirstChild(Player.Name) -- Find the character under PlayersModel
+        local character = PlayersModel:FindFirstChild(Player.Name) -- Find the character under PlayersModel
+        if character then
+            print("Character found for player: " .. Player.Name)
+        else
+            print("Character not found for player: " .. Player.Name)
+        end
+        return character
     end
+    print("PlayersModel is nil, cannot find characters.")
     return nil -- Return nil if the model doesn't exist
 end
 
@@ -76,16 +83,22 @@ end
 -- // Health Check
 function AimingChecks.Health(Character, Player)
     Character = Character or AimingUtilities.Character(Player)
-    local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
-    local Health = (Humanoid and Humanoid.Health or 0)
-    return Health > 0
+    if Character then
+        local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+        local Health = (Humanoid and Humanoid.Health or 0)
+        return Health > 0
+    end
+    return false
 end
 
 -- // Forcefield Check
 function AimingChecks.Forcefield(Character, Player)
     Character = Character or AimingUtilities.Character(Player)
-    local Forcefield = Character:FindFirstChildWhichIsA("ForceField")
-    return Forcefield == nil
+    if Character then
+        local Forcefield = Character:FindFirstChildWhichIsA("ForceField")
+        return Forcefield == nil
+    end
+    return false
 end
 
 -- // Visibility Check
