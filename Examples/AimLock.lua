@@ -1,5 +1,5 @@
 -- // Dependencies
-local Aiming = loadstring(game:HttpGet("https://raw.githubusercontent.com/Stefanuk12/Aiming/main/Load.lua"))()("Module")
+local Aiming = loadstring(game:HttpGet("https://raw.githubusercontent.com/Robititiger/Aiming/main/Load.lua"))()("Module")
 local AimingChecks = Aiming.Checks
 local AimingSelected = Aiming.Selected
 
