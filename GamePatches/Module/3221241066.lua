@@ -35,21 +35,21 @@ InitializePlayersModel()
 -- // Get the character of a player
 function AimingUtilities.Character(Player)
     -- Only look for other players' characters in PlayersModel
-    if Player.Name ~= LocalPlayer.Name then
+    if Player ~= LocalPlayer then
         if PlayersModel then
             local character = PlayersModel:FindFirstChild(Player.Name) -- Find the character under PlayersModel
             if character then
                 print("Character found for player: " .. Player.Name)
             else
+                -- Only print for other players
                 print("Character not found for player: " .. Player.Name)
             end
             return character
         end
         print("PlayersModel is nil, cannot find characters.")
-    else
-        -- Return nil for the local player since their character is not in PlayersModel
-        return nil
     end
+    -- Return nil for the local player since their character is not in PlayersModel
+    return nil
 end
 
 -- // Custom Team Check
