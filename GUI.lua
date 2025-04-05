@@ -1,12 +1,12 @@
 -- // Dependencies
-local LinoriaRepo = "https://raw.githubusercontent.com/Stefanuk12/LinoriaLib/main/"
+local LinoriaRepo = "https://raw.githubusercontent.com/Robititiger/LinoriaLib/main/"
 local Library = loadstring(game:HttpGet(LinoriaRepo .. "Library.lua"))()
 local ThemeManager = loadstring(game:HttpGet(LinoriaRepo .. "addons/ThemeManager.lua"))()
 local SaveManager = loadstring(game:HttpGet(LinoriaRepo .. "addons/SaveManager.lua"))()
 
 local Aiming = getgenv().Aiming
 if (not Aiming) then
-    Aiming = loadstring(game:HttpGet("https://raw.githubusercontent.com/Stefanuk12/Aiming/main/Load.lua"))()()
+    Aiming = loadstring(game:HttpGet("https://raw.githubusercontent.com/Robititiger/Aiming/main/Load.lua"))()()
 end
 repeat wait() until Aiming.Loaded
 
