@@ -5,7 +5,7 @@
 ]]
 
 -- // Dependencies
-local Aiming = loadstring(game:HttpGet("https://raw.githubusercontent.com/Stefanuk12/Aiming/main/Module.lua"))()
+local Aiming = loadstring(game:HttpGet("https://raw.githubusercontent.com/Robititiger/Aiming/main/Module.lua"))()
 local AimingUtilities = Aiming.Utilities
 local AimingChecks = Aiming.Checks
 
