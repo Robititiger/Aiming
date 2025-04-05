@@ -36,16 +36,24 @@ end
 
 InitializePlayersModel()
 
--- // Modified character retrieval
+-- // Get the character of a player
 function AimingUtilities.Character(Player)
     if Player == LocalPlayer then
         -- Local player's character is in Workspace
         return LocalPlayer.Character
     end
     
+    -- Check in PlayersModel first
     if PlayersModel then
-        return PlayersModel:FindFirstChild(Player.Name)
+        local character = PlayersModel:FindFirstChild(Player.Name)
+        if character then
+            return character
+        end
     end
+
+    -- Check directly in Workspace for player models
+    local character = Workspace:FindFirstChild(Player.Name)
+    return character
 end
 
 -- // Custom team check using Dot markers
