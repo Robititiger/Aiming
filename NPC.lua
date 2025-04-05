@@ -1,8 +1,8 @@
 if getgenv().AimingNPC then return getgenv().AimingNPC end
 
 -- // Dependencies
-local SignalManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/Stefanuk12/Signal/main/Manager.lua"))()
-local BeizerManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/Stefanuk12/Aiming/main/BeizerManager.lua"))()
+local SignalManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/Robititiger/Signal/main/Manager.lua"))()
+local BeizerManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/Robititiger/Aiming/main/BeizerManager.lua"))()
 
 -- // Services
 local Players = game:GetService("Players")
@@ -38,7 +38,7 @@ local GetChildren = Instancenew("Part").GetChildren
 -- // Vars
 local AimingNPCSettings = {
     Enabled = true,
-    VisibleCheck = true,
+    VisibleCheck = false,
     HitChance = 100,
     TargetPart = {"Head", "HumanoidRootPart"},
     RaycastIgnore = nil,
@@ -46,15 +46,15 @@ local AimingNPCSettings = {
     FOVSettings = {
         Circle = Drawingnew("Circle"),
         Enabled = true,
-        Scale = 60,
-        Sides = 12,
+        Scale = 64,
+        Sides = 64,
         Colour = Color3fromRGB(231, 84, 128)
     },
 
     Ignored = {}
 }
 local AimingNPC = {
-    ShowCredits = true,
+    ShowCredits = false,
     Settings = AimingNPCSettings,
 
     Signals = SignalManager.new(),
@@ -450,7 +450,7 @@ end)
 
 -- // Credits (by disabling this and not including your own way of crediting within the script, e.g. credits tab, is violating the license agreement. Beware!)
 if (AimingNPC.ShowCredits) then
-    messagebox("Thanks to Stefanuk12 for their Aiming Module (v2, NPC)", "Credits", 0)
+    messagebox("Thanks to Robititiger for their Aiming Module (v2, NPC)", "Credits", 0)
 end
 
 -- //
