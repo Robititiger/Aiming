@@ -35,7 +35,7 @@ InitializePlayersModel()
 -- // Get the character of a player
 function AimingUtilities.Character(Player)
     -- Only look for other players' characters in PlayersModel
-    if Player ~= LocalPlayer then
+    if Player.Name ~= LocalPlayer.Name then
         if PlayersModel then
             local character = PlayersModel:FindFirstChild(Player.Name) -- Find the character under PlayersModel
             if character then
