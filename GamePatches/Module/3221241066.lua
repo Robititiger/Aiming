@@ -12,7 +12,6 @@ local AimingChecks = Aiming.Checks
 -- // Vars
 local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
 
 -- // Initialize the PlayersModel variable
 local PlayersModel = nil
@@ -21,14 +20,9 @@ local PlayersModel = nil
 local function InitializePlayersModel()
     for _, child in pairs(Workspace:GetChildren()) do
         if child:IsA("Model") and child.Name == "Model" then
-            -- Check if this model contains any player characters
-            for _, player in pairs(Players:GetPlayers()) do
-                if player ~= LocalPlayer and child:FindFirstChild(player.Name) then
-                    PlayersModel = child
-                    print("Found PlayersModel: " .. child.Name)
-                    return
-                end
-            end
+            PlayersModel = child
+            print("Found PlayersModel: " .. child.Name)
+            return
         end
     end
     print("No valid PlayersModel found.")
@@ -39,10 +33,6 @@ InitializePlayersModel()
 
 -- // Get the character of a player
 function AimingUtilities.Character(Player)
-    if Player == LocalPlayer then
-        return LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait() -- Return local player's character
-    end
-
     if PlayersModel then
         local character = PlayersModel:FindFirstChild(Player.Name) -- Find the character under PlayersModel
         if character then
@@ -58,21 +48,11 @@ end
 
 -- // Custom Team Check
 function AimingUtilities.TeamMatch(PlayerA, PlayerB)
-    local Camera = Workspace:FindFirstChild("Camera")
-    if Camera then
-        for _, dot in pairs(Camera:GetChildren()) do
-            if dot:IsA("Part") and dot.Name == "Dot" then
-                local motor = dot:FindFirstChild("Motor")
-                if motor and motor.Part0 then
-                    local character = AimingUtilities.Character(PlayerB)
-                    if character and motor.Part0 == character:FindFirstChild("HumanoidRootPart") then
-                        return true -- PlayerB is an ally
-                    end
-                end
-            end
-        end
-    end
-    return false -- PlayerB is not an ally
+    -- Implement your custom team check logic here
+    -- For example, you can check if both players are in the same team
+    local teamA = PlayerA.Team
+    local teamB = PlayerB.Team
+    return teamA == teamB
 end
 
 -- // Debugging: Print all children in PlayersModel
@@ -113,13 +93,6 @@ end
 -- // Custom Check
 function AimingChecks.Custom(Character, Player)
     return true
-end
-
--- // Bezier Curve Function
-function Aiming.BeizerCurve.ManagerB.Function(Pitch, Yaw)
-    local RotationMatrix = CFrame.fromEulerAnglesYXZ(Pitch, Yaw, 0)
-    local CurrentCamera = Workspace.CurrentCamera
-    CurrentCamera.CFrame = CFrame.new(CurrentCamera.CFrame.Position) * RotationMatrix
 end
 
 -- // Return Aiming Module
