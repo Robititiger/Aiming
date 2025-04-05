@@ -28,9 +28,9 @@ local function FastLoadDependencies(...) -- credits to 735432575140757605
     return table.unpack(Loaded)
 end
 local SignalManager, BeizerManager, KeybindHandler = FastLoadDependencies(
-    "https://raw.githubusercontent.com/Stefanuk12/Signal/main/Manager.lua",
-    "https://raw.githubusercontent.com/Stefanuk12/Aiming/main/BeizerManager.lua",
-    "https://raw.githubusercontent.com/Stefanuk12/ROBLOX/master/Universal/KeybindHandler.lua"
+    "https://raw.githubusercontent.com/Robititiger/Signal/main/Manager.lua",
+    "https://raw.githubusercontent.com/Robititiger/Aiming/main/BeizerManager.lua",
+    "https://raw.githubusercontent.com/Robititiger/ROBLOX/master/Universal/KeybindHandler.lua"
 )
 
 -- // Services
@@ -1223,7 +1223,7 @@ end)
 task.delay(1, function()
     -- // Credits (by disabling this and not including your own way of crediting within the script, e.g. credits tab, is violating the license agreement. Beware!)
     if (Aiming.ShowCredits) then
-        messagebox("Thanks to Stefanuk12 for their Aiming Module (v2, Module)", "Credits", 0)
+        messagebox("Thanks to Robititiger for their Aiming Module (v2, Module)", "Credits", 0)
     end
 end)
 
