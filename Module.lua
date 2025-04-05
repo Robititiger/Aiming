@@ -140,7 +140,7 @@ local AimingSettings = {
 }
 local Aiming = {
     Loaded = false,
-    ShowCredits = true,
+    ShowCredits = false,
     Settings = AimingSettings,
 
     Signals = SignalManager.new(),
