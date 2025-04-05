@@ -12,6 +12,7 @@ local AimingChecks = Aiming.Checks
 -- // Vars
 local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
 
 -- // Initialize the PlayersModel variable
 local PlayersModel = nil
@@ -33,17 +34,22 @@ InitializePlayersModel()
 
 -- // Get the character of a player
 function AimingUtilities.Character(Player)
-    if PlayersModel then
-        local character = PlayersModel:FindFirstChild(Player.Name) -- Find the character under PlayersModel
-        if character then
-            print("Character found for player: " .. Player.Name)
-        else
-            print("Character not found for player: " .. Player.Name)
+    -- Only look for other players' characters in PlayersModel
+    if Player ~= LocalPlayer then
+        if PlayersModel then
+            local character = PlayersModel:FindFirstChild(Player.Name) -- Find the character under PlayersModel
+            if character then
+                print("Character found for player: " .. Player.Name)
+            else
+                print("Character not found for player: " .. Player.Name)
+            end
+            return character
         end
-        return character
+        print("PlayersModel is nil, cannot find characters.")
+    else
+        -- Return nil for the local player since their character is not in PlayersModel
+        return nil
     end
-    print("PlayersModel is nil, cannot find characters.")
-    return nil -- Return nil if the model doesn't exist
 end
 
 -- // Custom Team Check
