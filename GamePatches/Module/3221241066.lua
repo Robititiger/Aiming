@@ -9,97 +9,84 @@ local Aiming = loadstring(game:HttpGet("https://raw.githubusercontent.com/Stefan
 local AimingUtilities = Aiming.Utilities
 local AimingChecks = Aiming.Checks
 
--- // Vars
+-- // Services
 local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
--- // Initialize the PlayersModel variable
+-- // Vars
 local PlayersModel = nil
 
--- // Function to find the correct Model containing player characters
+-- // Find the model containing other players' characters
 local function InitializePlayersModel()
     for _, child in pairs(Workspace:GetChildren()) do
         if child:IsA("Model") and child.Name == "Model" then
-            PlayersModel = child
-            print("Found PlayersModel: " .. child.Name)
-            return
+            -- Verify it contains at least one other player's character
+            for _, player in pairs(Players:GetPlayers()) do
+                if player ~= LocalPlayer and child:FindFirstChild(player.Name) then
+                    PlayersModel = child
+                    print("Found valid PlayersModel")
+                    return
+                end
+            end
         end
     end
-    print("No valid PlayersModel found.")
+    warn("PlayersModel not found!")
 end
 
--- // Call the initialization function
 InitializePlayersModel()
 
--- // Get the character of a player
+-- // Modified character retrieval
 function AimingUtilities.Character(Player)
-    -- Only look for other players' characters in PlayersModel
-    if Player ~= LocalPlayer then
-        if PlayersModel then
-            local character = PlayersModel:FindFirstChild(Player.Name) -- Find the character under PlayersModel
-            if character then
-                print("Character found for player: " .. Player.Name)
-                return character
-            else
-                print("Character not found for player: " .. Player.Name)
+    if Player == LocalPlayer then
+        -- Local player's character is in Workspace
+        return LocalPlayer.Character
+    end
+    
+    if PlayersModel then
+        return PlayersModel:FindFirstChild(Player.Name)
+    end
+end
+
+-- // Custom team check using Dot markers
+function AimingUtilities.TeamMatch(PlayerA, PlayerB)
+    local camera = Workspace:FindFirstChild("Camera")
+    if not camera then return false end
+
+    -- Check if PlayerB has a team marker
+    for _, dot in pairs(camera:GetChildren()) do
+        if dot:IsA("Part") and dot.Name == "Dot" then
+            local motor = dot:FindFirstChild("Motor")
+            if motor and motor.Part0 then
+                local character = AimingUtilities.Character(PlayerB)
+                if character and motor.Part0 == character:FindFirstChild("HumanoidRootPart") then
+                    return true -- Is ally
+                end
             end
-        else
-            print("PlayersModel is nil, cannot find characters.")
         end
     end
-    -- Return nil for the local player since their character is not in PlayersModel
-    return nil
+    return false -- Is enemy
 end
 
--- // Custom Team Check
-function AimingUtilities.TeamMatch(PlayerA, PlayerB)
-    -- Implement your custom team check logic here
-    -- For example, you can check if both players are in the same team
-    local teamA = PlayerA.Team
-    local teamB = PlayerB.Team
-    return teamA == teamB
-end
-
--- // Debugging: Print all children in PlayersModel
-if PlayersModel then
-    for _, child in pairs(PlayersModel:GetChildren()) do
-        print("Found character in PlayersModel: " .. child.Name)
-    end
-else
-    print("PlayersModel is nil, cannot find characters.")
-end
-
--- // Health Check
+-- // Health check override
 function AimingChecks.Health(Character, Player)
     Character = Character or AimingUtilities.Character(Player)
-    if Character then
-        local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
-        local Health = (Humanoid and Humanoid.Health or 0)
-        return Health > 0
-    end
-    return false
+    if not Character then return false end
+    
+    local humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+    return humanoid and humanoid.Health > 0
 end
 
--- // Forcefield Check
+-- // Forcefield check override
 function AimingChecks.Forcefield(Character, Player)
     Character = Character or AimingUtilities.Character(Player)
-    if Character then
-        local Forcefield = Character:FindFirstChildWhichIsA("ForceField")
-        return Forcefield == nil
-    end
-    return false
+    return not Character:FindFirstChildWhichIsA("ForceField")
 end
 
--- // Visibility Check
-function AimingChecks.Invisible(Part)
-    return Part.Transparency == 1
+-- // Camera control for silent aim
+function Aiming.BeizerCurve.ManagerB.Function(Pitch, Yaw)
+    local RotationMatrix = CFrame.fromEulerAnglesYXZ(Pitch, Yaw, 0)
+    Workspace.CurrentCamera.CFrame = CFrame.new(Workspace.CurrentCamera.CFrame.Position) * RotationMatrix
 end
 
--- // Custom Check
-function AimingChecks.Custom(Character, Player)
-    return true
-end
-
--- // Return Aiming Module
 return Aiming
