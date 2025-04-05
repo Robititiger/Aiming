@@ -84,7 +84,7 @@ local AimingSettings = {
     TargetPart = {"Head", "HumanoidRootPart"},
     RaycastIgnore = nil,
     Offset = Vector2new(),
-    MaxDistance = 1000,
+    MaxDistance = 3000,
 
     LockMode = {
         Enabled = false,
@@ -100,8 +100,8 @@ local AimingSettings = {
         Enabled = true,
         Visible = true,
         Type = "Static",
-        Scale = 60,
-        Sides = 12,
+        Scale = 64,
+        Sides = 64,
         Colour = Color3fromRGB(231, 84, 128),
         DynamicFOVConstant = 25,
 
@@ -112,8 +112,8 @@ local AimingSettings = {
         Circle = Drawingnew("Circle"),
         Enabled = false,
         Visible = true,
-        Scale = 10,
-        Sides = 30,
+        Scale = 16,
+        Sides = 32,
         Colour = Color3fromRGB(83, 31, 46),
     },
 
