@@ -14,9 +14,29 @@ local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
+-- // Initialize the PlayersModel variable
+local PlayersModel = nil
+
+-- // Function to find the correct Model containing player characters
+local function InitializePlayersModel()
+    for _, child in pairs(Workspace:GetChildren()) do
+        if child:IsA("Model") and child.Name == "Model" then
+            -- Check if this model contains player characters
+            if child:FindFirstChild(LocalPlayer.Name) then
+                PlayersModel = child
+                print("Found PlayersModel: " .. child.Name)
+                return
+            end
+        end
+    end
+    print("No valid PlayersModel found.")
+end
+
+-- // Call the initialization function
+InitializePlayersModel()
+
 -- // Get the character of a player
 function AimingUtilities.Character(Player)
-    local PlayersModel = Workspace:FindFirstChild("Model")
     if PlayersModel then
         return PlayersModel:FindFirstChild(Player.Name) -- Find the character under PlayersModel
     end
@@ -42,12 +62,13 @@ function AimingUtilities.TeamMatch(PlayerA, PlayerB)
     return false -- PlayerB is not an ally
 end
 
--- // Debugging: Print all children in Workspace.Model
-local PlayersModel = Workspace:FindFirstChild("Model")
+-- // Debugging: Print all children in PlayersModel
 if PlayersModel then
     for _, child in pairs(PlayersModel:GetChildren()) do
-        print("Found character: " .. child.Name)
+        print("Found character in PlayersModel: " .. child.Name)
     end
+else
+    print("PlayersModel is nil, cannot find characters.")
 end
 
 -- // Health Check
