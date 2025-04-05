@@ -14,11 +14,9 @@ local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
--- // Find the model that holds all other players' character models
-local PlayersModel = Workspace:FindFirstChild("Model")
-
--- //
+-- // Get the character of a player
 function AimingUtilities.Character(Player)
+    local PlayersModel = Workspace:FindFirstChild("Model")
     if PlayersModel then
         return PlayersModel:FindFirstChild(Player.Name) -- Find the character under PlayersModel
     end
@@ -27,14 +25,12 @@ end
 
 -- // Custom Team Check
 function AimingUtilities.TeamMatch(PlayerA, PlayerB)
-    -- Check if PlayerB has a "Dot" object under the Camera
     local Camera = Workspace:FindFirstChild("Camera")
     if Camera then
         for _, dot in pairs(Camera:GetChildren()) do
             if dot:IsA("Part") and dot.Name == "Dot" then
                 local motor = dot:FindFirstChild("Motor")
                 if motor and motor.Part0 then
-                    -- Check if the Part0 points to PlayerB's HumanoidRootPart
                     local character = AimingUtilities.Character(PlayerB)
                     if character and motor.Part0 == character:FindFirstChild("HumanoidRootPart") then
                         return true -- PlayerB is an ally
@@ -46,45 +42,45 @@ function AimingUtilities.TeamMatch(PlayerA, PlayerB)
     return false -- PlayerB is not an ally
 end
 
--- //
+-- // Debugging: Print all children in Workspace.Model
+local PlayersModel = Workspace:FindFirstChild("Model")
+if PlayersModel then
+    for _, child in pairs(PlayersModel:GetChildren()) do
+        print("Found character: " .. child.Name)
+    end
+end
+
+-- // Health Check
 function AimingChecks.Health(Character, Player)
-    -- // Get Humanoid
     Character = Character or AimingUtilities.Character(Player)
     local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
-
-    -- // Get Health
     local Health = (Humanoid and Humanoid.Health or 0)
-
-    -- //
     return Health > 0
 end
 
--- //
+-- // Forcefield Check
 function AimingChecks.Forcefield(Character, Player)
-    -- // Get character
     Character = Character or AimingUtilities.Character(Player)
     local Forcefield = Character:FindFirstChildWhichIsA("ForceField")
-
-    -- // Return
     return Forcefield == nil
 end
 
--- //
+-- // Visibility Check
 function AimingChecks.Invisible(Part)
     return Part.Transparency == 1
 end
 
--- //
+-- // Custom Check
 function AimingChecks.Custom(Character, Player)
     return true
 end
 
--- //
+-- // Bezier Curve Function
 function Aiming.BeizerCurve.ManagerB.Function(Pitch, Yaw)
     local RotationMatrix = CFrame.fromEulerAnglesYXZ(Pitch, Yaw, 0)
     local CurrentCamera = Workspace.CurrentCamera
     CurrentCamera.CFrame = CFrame.new(CurrentCamera.CFrame.Position) * RotationMatrix
 end
 
--- // Return
+-- // Return Aiming Module
 return Aiming
