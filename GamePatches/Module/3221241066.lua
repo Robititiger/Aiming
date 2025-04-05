@@ -15,20 +15,14 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
 -- // Find the model that holds all other players' character models
-local PlayersModel = nil
-for _, child in pairs(Workspace:GetChildren()) do
-    if child:IsA("Model") and child.Name == "Model" then
-        PlayersModel = child
-        break
-    end
-end
+local PlayersModel = Workspace:FindFirstChild("Model")
 
 -- //
 function AimingUtilities.Character(Player)
     if PlayersModel then
-        return PlayersModel:FindFirstChild(Player.Name)
+        return PlayersModel:FindFirstChild(Player.Name) -- Find the character under PlayersModel
     end
-    return nil
+    return nil -- Return nil if the model doesn't exist
 end
 
 -- // Custom Team Check
